@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8">
+		<title>Pokes</title>
+	</head>
+	<body>
+		<header>
+			<h1>Welcome, {{request.session.name}}!</h1>
+			<h2>{{request.session.poke}} people poked you!</h2>
+			<table style="float: right;">
+				<tbody>
+					<td><a href="/logout">Logout</a></td>
+				</tbody>
+			</table>
+		</header>
+		<form action="poke_proccesser" method="post">
+		{%csrf_token%}
+			<textarea rows="8" cols="80">
+				{%for str in request.session.activities%}
+					{{str}}
+				{%endfor%}
+			</textarea>
+			<h3>People You May Want to Poke:</h3>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Alias</th>
+					<th>Email Address</th>
+					<th>Poke History</th>
+					<th>Action</th>
+				</tr>
+				{% for user in users %}
+				<tr>
+					<td>{{user.name}}</td>
+					<td>{{user.alias}}</td>
+					<td>{{user.email}}</td>
+					<td>{{poke.poke}}</td>
+					<input type="hidden" name="add_poke" value="{{poke.id}}">
+					<td><input type="submit" value="Poke!"></td>
+				</tr>
+				{%endfor%}
+			</table>
+		</form>
+	</body>
+</html>
